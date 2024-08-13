@@ -106,15 +106,7 @@ int main(int argc, char *argv[]) {
             }
         }
     } 
- else {
-        fprintf(stderr, "Algoritmo desconhecido: %s\n", argv[1]);
-        free(texto);
-        free(padrao);
-        free(consultas);
-        fclose(saida);
-        
-        return 1;
-    }
+ 
 
     free(texto);
     free(padrao);
