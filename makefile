@@ -1,6 +1,5 @@
-all: obj/tp3.o  obj/tempo.o obj/Kmp.o obj/forcaBruta.o
-	gcc obj/tp3.o obj/tempo.o obj/Kmp.o obj/forcaBruta.o -o tp3
-	 
+all: obj/tp3.o obj/tempo.o obj/Kmp.o obj/forcaBruta.o obj/boyerMooreHorspool.o
+	gcc obj/tp3.o obj/tempo.o obj/Kmp.o obj/forcaBruta.o obj/boyerMooreHorspool.o -o tp3
 
 obj/tp3.o: desenvolvimento_funcoes/tp3.c
 	gcc desenvolvimento_funcoes/tp3.c -c
@@ -18,5 +17,9 @@ obj/forcaBruta.o: desenvolvimento_funcoes/forcaBruta.c interfaces/forcaBruta.h
 	gcc desenvolvimento_funcoes/forcaBruta.c -c
 	mv forcaBruta.o obj/
 
+obj/boyerMooreHorspool.o: desenvolvimento_funcoes/boyerMooreHorspool.c interfaces/boyerMooreHorspool.h
+	gcc desenvolvimento_funcoes/boyerMooreHorspool.c -c
+	mv boyerMooreHorspool.o obj/
+
 apagar:
-	rm tp3 
+	rm tp3 obj/*.o

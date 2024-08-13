@@ -8,10 +8,11 @@
 #include "../interfaces/tempo.h"
 #include "../interfaces/kmp.h"
 #include "../interfaces/forcaBruta.h"
+#include "../interfaces/boyerMooreHorspool.h"
 
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        fprintf(stderr, "Uso: %s <arquivo_entrada>\n", argv[0]);
+    if (argc != 3) {
+        fprintf(stderr, "Uso: %s <algoritmo_a_ser_usado> <arquivo_entrada>\n", argv[0]);
         return 1;
     }
 
@@ -19,13 +20,13 @@ int main(int argc, char *argv[]) {
     struct rusage inicio, fim;
     iniciar_contagem(&ini_tempo_total, &inicio);
 
-    FILE *entrada = fopen(argv[1], "r");
+    FILE *entrada = fopen(argv[2], "r");
     if (!entrada) {
         perror("Erro ao abrir o arquivo de entrada");
         return 1;
     }
 
-    // Abrir o arquivo de saída para escrita
+    // Abrir os arquivos de saída para escrita
     FILE *saida = fopen("saida.txt", "w");
     if (!saida) {
         perror("Erro ao abrir o arquivo de saída");
@@ -33,13 +34,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
-    FILE *saida2 = fopen("saida2.txt", "w");
-    if (!saida2) {
-        perror("Erro ao abrir o arquivo de saída 2");
-        fclose(entrada);
-        fclose(saida);
-        return 1;
-    }
+    
 
     char *texto = NULL;
     char *padrao = NULL;
@@ -48,7 +43,6 @@ int main(int argc, char *argv[]) {
     getline(&texto, &tamanho_texto, entrada);
     getline(&padrao, &tamanho_padro, entrada);
 
-    
     texto[strcspn(texto, "\n")] = 0;
     padrao[strcspn(padrao, "\n")] = 0;
 
@@ -60,7 +54,6 @@ int main(int argc, char *argv[]) {
         perror("Erro ao alocar memória");
         fclose(entrada);
         fclose(saida);
-        fclose(saida2);
         free(texto);
         free(padrao);
         return 1;
@@ -71,30 +64,56 @@ int main(int argc, char *argv[]) {
 
     fclose(entrada);
 
-    // Usar o método KMP para o primeiro arquivo de saída
-    for (int i = 0; i < k; i++) {
-        int a = consultas[2 * i] - 1;
-        int b = consultas[2 * i + 1] - 1;
-        if (a >= 0 && b < strlen(texto) && a <= b) {
-            if (busca_kmp(texto, padrao, a, b)) {
-                fprintf(saida, "sim\n");
+    // Escolher o algoritmo com base no segundo argumento
+    if (strcmp(argv[1], "kmp") == 0 || strcmp(argv[1], "KMP") == 0) {
+        for (int i = 0; i < k; i++) {
+            int a = consultas[2 * i] - 1;
+            int b = consultas[2 * i + 1] - 1;
+            if (a >= 0 && b < strlen(texto) && a <= b) {
+                if (busca_kmp(texto, padrao, a, b)) {
+                    fprintf(saida, "sim\n");
+                } else {
+                    fprintf(saida, "nao\n");
+                }
             } else {
                 fprintf(saida, "nao\n");
             }
-        } else {
-            fprintf(saida, "nao\n");
         }
     }
-
-    // Usar o método de força bruta para o segundo arquivo de saída
-    for (int i = 0; i < k; i++) {
-        int a = consultas[2 * i] - 1;
-        int b = consultas[2 * i + 1] - 1;
-        if (a >= 0 && b < strlen(texto) && a <= b) {
-            verificar_substring(texto, padrao, a, b, saida2);
-        } else {
-            fprintf(saida2, "nao\n");
+    if (strcmp(argv[1], "forca") == 0 || strcmp(argv[1], "FORCA") == 0) {
+        for (int i = 0; i < k; i++) {
+            int a = consultas[2 * i] - 1;
+            int b = consultas[2 * i + 1] - 1;
+            if (a >= 0 && b < strlen(texto) && a <= b) {
+                verificar_substring(texto, padrao, a, b, saida);
+            } else {
+                fprintf(saida, "nao\n");
+            }
         }
+    } 
+    if (strcmp(argv[1], "bm_horspool") == 0 || strcmp(argv[1], "BM_HORSPOOL") == 0) {
+        for (int i = 0; i < k; i++) {
+            int a = consultas[2 * i] - 1;
+            int b = consultas[2 * i + 1] - 1;
+            if (a >= 0 && b < strlen(texto) && a <= b) {
+                if (busca_boyer_moore_horspool(texto, padrao, a, b)) {
+                    fprintf(saida, "sim\n");
+                } else {
+                    fprintf(saida, "nao\n");
+                }
+            } else {
+                fprintf(saida, "nao\n");
+            }
+        }
+    } 
+ else {
+        fprintf(stderr, "Algoritmo desconhecido: %s\n", argv[1]);
+        free(texto);
+        free(padrao);
+        free(consultas);
+        fclose(saida);
+        
+        return 1;
     }
 
     free(texto);
@@ -104,9 +123,8 @@ int main(int argc, char *argv[]) {
     parar_contagem(&fim_tempo_total, &fim);
     printar_tempo_gasto(&ini_tempo_total, &inicio, &fim_tempo_total, &fim);
 
-    // Fechar os arquivos de saída
     fclose(saida);
-    fclose(saida2);
+    
 
     return 0;
 }
