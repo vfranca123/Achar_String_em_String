@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     getline(&texto, &tamanho_texto, entrada);
     getline(&padrao, &tamanho_padro, entrada);
 
-    // Remover o '\n' do final das strings, se presente
+    
     texto[strcspn(texto, "\n")] = 0;
     padrao[strcspn(padrao, "\n")] = 0;
 
