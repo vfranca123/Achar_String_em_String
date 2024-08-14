@@ -9,7 +9,6 @@
 #include "../interfaces/kmp.h"
 #include "../interfaces/forcaBruta.h"
 
-
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         fprintf(stderr, "Uso: %s <algoritmo_a_ser_usado> <arquivo_entrada>\n", argv[0]);
@@ -33,8 +32,6 @@ int main(int argc, char *argv[]) {
         fclose(entrada);
         return 1;
     }
-    
-    
     
     char *texto = NULL;
     char *padrao = NULL;
@@ -79,8 +76,7 @@ int main(int argc, char *argv[]) {
                 fprintf(saida, "nao\n");
             }
         }
-    }
-    if (strcmp(argv[1], "forca") == 0 || strcmp(argv[1], "FORCA") == 0) {
+    } else if (strcmp(argv[1], "forca") == 0 || strcmp(argv[1], "FORCA") == 0) {
         for (int i = 0; i < k; i++) {
             int a = consultas[2 * i] - 1;
             int b = consultas[2 * i + 1] - 1;
@@ -90,17 +86,14 @@ int main(int argc, char *argv[]) {
                 fprintf(saida, "nao\n");
             }
         }
-    } 
-
-    if(strcmp(argv[1], "forca") == 0 || strcmp(argv[1], "FORCA") == 0|| strcmp(argv[1], "kmp") || strcmp(argv[1], "KMP") == 0){
-
+    } else {
         printf("insira um algoritmo existente \n");
         free(texto);
         free(padrao);
         free(consultas);
-        return 0;
+        fclose(saida);
+        return 1;
     }
-    
 
     free(texto);
     free(padrao);
@@ -110,7 +103,7 @@ int main(int argc, char *argv[]) {
     printar_tempo_gasto(&ini_tempo_total, &inicio, &fim_tempo_total, &fim);
 
     fclose(saida);
-    
 
     return 0;
 }
+
