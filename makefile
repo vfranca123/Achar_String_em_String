@@ -1,25 +1,24 @@
-all: obj/tp3.o obj/tempo.o obj/Kmp.o obj/forcaBruta.o obj/boyerMooreHorspool.o
-	gcc obj/tp3.o obj/tempo.o obj/Kmp.o obj/forcaBruta.o obj/boyerMooreHorspool.o -o tp3
+# Alvo principal
+all: tp3
 
+# Cria o executável
+tp3: obj/tp3.o obj/tempo.o obj/kmp.o obj/forcaBruta.o
+	gcc obj/tp3.o obj/tempo.o obj/kmp.o obj/forcaBruta.o -o tp3
+
+# Regras para criar arquivos objeto
 obj/tp3.o: desenvolvimento_funcoes/tp3.c
-	gcc desenvolvimento_funcoes/tp3.c -c
-	mv tp3.o obj/
+	gcc -c desenvolvimento_funcoes/tp3.c -o obj/tp3.o
 
 obj/tempo.o: desenvolvimento_funcoes/tempo.c interfaces/tempo.h
-	gcc desenvolvimento_funcoes/tempo.c -c
-	mv tempo.o obj/
+	gcc -c desenvolvimento_funcoes/tempo.c -o obj/tempo.o
 
-obj/Kmp.o: desenvolvimento_funcoes/kmp.c interfaces/kmp.h
-	gcc desenvolvimento_funcoes/kmp.c -c
-	mv kmp.o obj/
+obj/kmp.o: desenvolvimento_funcoes/kmp.c interfaces/kmp.h
+	gcc -c desenvolvimento_funcoes/kmp.c -o obj/kmp.o
 
 obj/forcaBruta.o: desenvolvimento_funcoes/forcaBruta.c interfaces/forcaBruta.h
-	gcc desenvolvimento_funcoes/forcaBruta.c -c
-	mv forcaBruta.o obj/
+	gcc -c desenvolvimento_funcoes/forcaBruta.c -o obj/forcaBruta.o
 
-obj/boyerMooreHorspool.o: desenvolvimento_funcoes/boyerMooreHorspool.c interfaces/boyerMooreHorspool.h
-	gcc desenvolvimento_funcoes/boyerMooreHorspool.c -c
-	mv boyerMooreHorspool.o obj/
-
+# Regra para limpar arquivos compilados
 apagar:
-	rm tp3 obj/*.o
+	rm -f tp3 obj/*.o
+

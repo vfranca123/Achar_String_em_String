@@ -1,0 +1,6 @@
+Esta é a linha de texto onde procuraremos a substring.
+substring
+4
+1 10
+5 20
+15 30

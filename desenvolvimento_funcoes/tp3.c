@@ -8,7 +8,7 @@
 #include "../interfaces/tempo.h"
 #include "../interfaces/kmp.h"
 #include "../interfaces/forcaBruta.h"
-#include "../interfaces/boyerMooreHorspool.h"
+
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     }
     
     
-
+    
     char *texto = NULL;
     char *padrao = NULL;
     size_t tamanho_texto = 0, tamanho_padro = 0;
@@ -91,22 +91,16 @@ int main(int argc, char *argv[]) {
             }
         }
     } 
-    if (strcmp(argv[1], "bm_horspool") == 0 || strcmp(argv[1], "BM_HORSPOOL") == 0) {
-        for (int i = 0; i < k; i++) {
-            int a = consultas[2 * i] - 1;
-            int b = consultas[2 * i + 1] - 1;
-            if (a >= 0 && b < strlen(texto) && a <= b) {
-                if (busca_boyer_moore_horspool(texto, padrao, a, b)) {
-                    fprintf(saida, "sim\n");
-                } else {
-                    fprintf(saida, "nao\n");
-                }
-            } else {
-                fprintf(saida, "nao\n");
-            }
-        }
-    } 
- 
+
+    if(strcmp(argv[1], "forca") == 0 || strcmp(argv[1], "FORCA") == 0|| strcmp(argv[1], "kmp") || strcmp(argv[1], "KMP") == 0){
+
+        printf("insira um algoritmo existente \n");
+        free(texto);
+        free(padrao);
+        free(consultas);
+        return 0;
+    }
+    
 
     free(texto);
     free(padrao);
