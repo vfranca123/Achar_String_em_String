@@ -38,6 +38,12 @@ Saída:
 sim
 nao
 sim
+# Sistema de pastas
+-data : Se encontra exemplos de diferentes para usar no trabalho
+-desenvolvimento_funcoes : Esta localisado o desenvolvimento de cada função e ferramenta usada 
+-doc : Local onde esta a documentção do trabalho
+-interfaces : Definição das resoluçoes e estrategias desenvolvidasdas 
+-obj: Onde se encotra os arquivos apos compilado para uso   
 
 # Feito por 
 -Vitor Ferreira França
